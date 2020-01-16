@@ -1,8 +1,19 @@
 const express = require('express');
+const PostRouter = require("./posts/postRouter");
+const UserRouter = require("./users/userRouter");
+const UseMiddleWare = require("./MiddleWare/UseMiddleWare");
+const helmet = require('helmet');
 
-const server = express();
+const app = express();
 
-server.get('/', (req, res) => {
+app.use(express.json());
+app.use(UseMiddleWare.logger);
+app.use("/posts", PostRouter);
+app.use("users", UserRouter);
+app.use(helmet());
+
+
+app.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`);
 });
 
@@ -10,4 +21,4 @@ server.get('/', (req, res) => {
 
 function logger(req, res, next) {}
 
-module.exports = server;
+module.exports = app;
